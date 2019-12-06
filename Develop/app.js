@@ -16,12 +16,18 @@ function promptForManager() {
     .prompt([{
       type: "input",
       name: "name",
-      message: "Enter the manager's name."
+      message: "Enter the manager's name.",
+
     },
     {
       type: "input",
       name: "id",
       message: "Enter the manager's ID.",
+      // source: https://searchcode.com/codesearch/view/98875892/
+      validate: function validateFirstName(name) {
+        let valid = !isNaN(parseFloat(name));
+        return valid || "Please enter a number";
+      }
     },
     {
       type: "input",
