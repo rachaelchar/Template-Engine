@@ -25,7 +25,7 @@ function promptForManager() {
       message: "Enter the manager's ID: ",
       // source: https://searchcode.com/codesearch/view/98875892/
       // using the "validate" property provided by inquirer, the following code checks that the id input is a number
-      validate: function validateFirstName(name) {
+      validate: function validatetName(name) {
         let valid = !isNaN(parseFloat(name));
         return valid || "Please enter a number";
       }
@@ -34,6 +34,10 @@ function promptForManager() {
       type: "input",
       name: "email",
       message: "Enter the manager's email: ",
+      validate: function(email) {
+        return validator
+        .isEmail(email) || "Please enter a valid email."
+      }
     }
     ]);
 }
