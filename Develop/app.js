@@ -41,13 +41,17 @@ function promptForManager() {
     {
       type: "input",
       name: "officeNumber",
-      message: "Enter the manager's office number: "
+      message: "Enter the manager's office number: ",
+      validate: function validatetName(name) {
+        let valid = !isNaN(parseFloat(name));
+        return valid || "Please enter a number";
+      }
     }
     ]);
 }
 
 
-// ========= ASYNC FUNCTION ==========
+// ========= ASYNC PROMPT FUNCTION ==========
 
 const promptForEmployeeDetails = async (employees = []) => {
   const prompts = [
@@ -112,8 +116,6 @@ const promptForEmployeeDetails = async (employees = []) => {
   const newEmployees = [...employees, answers];
   return more ? promptForEmployeeDetails(newEmployees) : newEmployees;
 };
-
-
 
 
 //  ========= CALL FUNCTIONS ===========
