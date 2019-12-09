@@ -6,11 +6,7 @@ const Intern = require("./lib/Intern.js");
 const Engineer = require("./lib/Engineer.js");
 
 
-let employeesObject = {
-  managers: [],
-  engineers: [],
-  interns: []
-}
+let employeesArray = [];
 
 function promptForManager() {
   return inquirer
@@ -45,13 +41,15 @@ function promptForManager() {
 promptForManager()
   .then(function (answers) {
     let newManager = answers;
-    console.log(newManager);
-    employeesObject.managers.push(newManager);
-    console.log(employeesObject);
+    // console.log(newManager);
+    employeesArray.push(newManager);
     return answers;
   })
   .then(function (answers) {
     promptForEmployeeDetails(answers);
+    let newEmployee = answers;
+    employeesArray.push(newEmployee);
+    // console.log(employeesArray);
     return answers;
   })
   .catch(function (err) {
@@ -107,6 +105,7 @@ function promptForEmployeeDetails() {
         if (response.type === "Engineer") {
           return response.type;
         }
+
       },
       name: "GitHub",
       message: "Enter the Engineer's GitHub: "
