@@ -8,6 +8,9 @@ const Engineer = require("./lib/Engineer.js");
 
 let employeesArray = [];
 
+
+//  ========= DECLARE FUNCTIONS ===========
+
 function promptForManager() {
   return inquirer
     .prompt([{
@@ -34,35 +37,23 @@ function promptForManager() {
         return validator
           .isEmail(email) || "Please enter a valid email."
       }
+    },
+    {
+      type: "input",
+      name: "officeNumber",
+      message: "Enter the manager's office number: "
     }
     ]);
 }
 
-promptForManager()
-  .then(function (answers) {
-    let newManager = answers;
-    // console.log(newManager);
-    employeesArray.push(newManager);
-    return answers;
-  })
-  .then(function (answers) {
-    promptForEmployeeDetails(answers);
-    let newEmployee = answers;
-    employeesArray.push(newEmployee);
-    // console.log(employeesArray);
-    return answers;
-  })
-  .catch(function (err) {
-    console.log("catch", err);
-  });
 
+// ========= ASYNC FUNCTION ==========
 
-
-function promptForEmployeeDetails() {
-  return inquirer
-    .prompt([{
+const promptForEmployeeDetails = async (employees = []) => {
+  const prompts = [
+    {
       type: "list",
-      name: "type",
+      name: "role",
       message: "What kind of employee do you want to add to your team?",
       choices: ["Intern", "Engineer"]
     },
@@ -116,6 +107,29 @@ function promptForEmployeeDetails() {
       message: "Would you like to add more team members?",
       default: true,
     }
-    ]);
-}
+  ]
+  const { more, ...answers } = await inquirer.prompt(prompts);
+  const newEmployees = [...employees, answers];
+  return more ? promptForEmployeeDetails(newEmployees) : newEmployees;
+};
+
+
+
+
+//  ========= CALL FUNCTIONS ===========
+promptForManager()
+  .then(function (employee) {
+    employee.role = "Manager";
+    employeesArray.push(employee);
+    return employeesArray;
+  })
+  .then(async (employeesArray) => {
+    employeesArray = await promptForEmployeeDetails(employeesArray);
+    console.log(employeesArray)
+  })
+  .catch(function (err) {
+    console.log("catch", err);
+  });
+
+
 
